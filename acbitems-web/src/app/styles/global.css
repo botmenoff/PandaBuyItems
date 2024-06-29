@@ -1,0 +1,32 @@
+/* styles/variables.css */
+
+:root {
+    --primary-color: #314fd8;
+    --secondary-color: #ffffff;
+    --font-color: #2e3641;
+    --font-size: 16px;
+    --padding: 1rem;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    color: var(--font-color);
+    padding: var(--padding);
+    background-color: var(--secondary-color);
+    padding: 0;
+    margin: 0;
+}
+
+a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+a:hover {
+    transition: 1s;
+    scale: 1.5;
+}
