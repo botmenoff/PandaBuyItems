@@ -1,0 +1,18 @@
+const express = require('express');
+const router = express.Router();
+// import the controller functions
+const UserController = require('../controllers/User.controller.js');
+// import the middlewares
+const UsersMiddlewares = require('../middlewares/Users.middlewares.js');
+// import service
+const Services = require('../services/Services.js')
+
+// USERS ROUTES
+router.get('/user/verify/:jwt', UserController.verifyEmail);
+router.get('/user/get', UserController.getAllUsers);
+router.get('/user/login', UserController.loginUser)
+router.post('/user/register', UsersMiddlewares.verifyUserData, /*UsersMiddlewares.verificationEmail,*/ UserController.registerUser);
+router.delete('/user/delete/:id', UsersMiddlewares.verifyToken, UserController.deleteUsersById);
+router.put('/user/update/:id', UsersMiddlewares.verifyToken, UserController.updateUser)
+
+module.exports = router;
