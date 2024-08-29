@@ -7,11 +7,11 @@ interface NavBarProps {
   text?: string;
 }
 
-// Modifica el componente para aceptar las props tipadas
+// Modifica el componente para aceptar las props tipadas si no le pasas texto se pone All
 export function NavBarItem({ text }: NavBarProps) {
   return (
     <div className="navBar-container">
-      <a>
+      <a >
         <p>{text || "All"}</p>
       </a>
     </div>
