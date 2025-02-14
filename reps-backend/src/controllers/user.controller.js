@@ -1,5 +1,5 @@
-const User = require('../models/user.model');
-const userService = require('../services/user.services')
+const User = require('../models/user.model.js');
+const userService = require('../services/user.services.js')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 require('dotenv').config(); // Cargar las variables de entorno
