@@ -1,0 +1,23 @@
+# Usa una imagen oficial de Node.js con soporte para Expo
+FROM node:18-alpine
+
+# Define el directorio de trabajo en el contenedor
+WORKDIR /app
+
+# Copia los archivos package.json y package-lock.json
+COPY package*.json ./
+
+# Instala las dependencias
+RUN npm install
+
+# Instala Expo CLI globalmente
+RUN npm install -g expo-cli
+
+# Copia el código del frontend
+COPY . .
+
+# Expone los puertos necesarios para Expo
+EXPOSE 19000 19001 19002
+
+# Comando por defecto para ejecutar Expo
+CMD ["npx", "expo", "start"]

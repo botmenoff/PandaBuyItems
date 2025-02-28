@@ -1,0 +1,66 @@
+name: repproject
+
+services:
+  # MONGO    
+  mongo:
+    image: mongo:7.0.12
+    container_name: repproject_mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - repproject-network
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+
+  # BACKEND
+  backend:
+    container_name: repproject_server
+    build:
+      context: ./reps-server
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file: ./reps-server/.env
+    volumes:
+      - ./reps-server:/app
+      - /app/node_modules
+    ports:
+      - 5500:5500
+    networks:
+      - repproject-network
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/repproject
+
+  # FRONTEND (Expo)
+  frontend:
+    container_name: repproject_client
+    build:
+      context: ./reps-webapp
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    volumes:
+      - ./reps-webapp:/app
+      - /app/node_modules
+    networks:
+      - repproject-network
+    depends_on:
+      - backend
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - EXPO_DEVTOOLS_LISTEN_ADDRESS=0.0.0.0
+    command: npm start
+    ports:
+      - 19000:19000  # Expo Metro Bundler
+      - 19001:19001  # Expo LAN WebSocket
+      - 19002:19002  # Expo Debugger
+
+volumes:
+  mongo_data:
+
+networks:
+  repproject-network:
+    driver: bridge
